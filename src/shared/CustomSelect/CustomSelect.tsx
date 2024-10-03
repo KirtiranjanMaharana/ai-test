@@ -106,7 +106,13 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
           {options.map((option) => (
             <div
               key={option.value}
-              className="p-2 flex items-center hover:bg-gray-100 cursor-pointer"
+              className={`p-2 flex items-center hover:bg-gray-100 cursor-pointer ${
+                option.value === "complete"
+                  ? "text-green-500"
+                  : option.value === "failure"
+                  ? "text-red-400"
+                  : "text-yellow-800"
+              } `}
               onClick={() => handleOptionClick(option.value)}
             >
               {multiple && (

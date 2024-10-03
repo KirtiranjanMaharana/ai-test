@@ -11,6 +11,7 @@ import { PiDotsThreeVerticalBold } from "react-icons/pi";
 import ThreeDotMenu from "../ThreeDotMenu/ThreeDotMenu.tsx";
 import DeleteModal from "../../shared/Modals/DeleteModal.tsx";
 import Spinner from "../Spinner/Spinner.tsx";
+import Pagination from "../../shared/Pagination/Pagination.tsx";
 
 interface FileUpload {
   name: string;
@@ -286,6 +287,10 @@ const FileManager: React.FC = () => {
                 )}
               </>
             )}
+
+            <div className="flex justify-end mb-3 mr-2">
+              <Pagination />
+            </div>
           </>
         )}
       </div>

@@ -13,10 +13,15 @@ const FeatureCard: React.FC<FeatureCardProps> = ({
   description,
 }) => {
   return (
-    <div className="flex flex-col  items-center justify-center bg-gradient-to-r from-orange-300 via-pink-300 to-purple-400 bg-opacity-10 backdrop-blur-lg rounded-lg p-6 text-center shadow-md hover:shadow-lg transition-shadow">
+    <div
+      style={{
+        background: "linear-gradient(180deg, #9c0816 0%, #0b0a6d 100%)",
+      }}
+      className="flex flex-col  items-center justify-center  bg-opacity-10 backdrop-blur-lg rounded-lg p-6 text-center shadow-md hover:shadow-lg transition-shadow"
+    >
       <div className="text-4xl mb-4">{icon}</div>
       <h3 className="text-lg font-semibold mb-2 text-white">{title}</h3>
-      <p className="text-sm text-gray-500">{description}</p>
+      <p className="text-sm text-gray-300">{description}</p>
     </div>
   );
 };
