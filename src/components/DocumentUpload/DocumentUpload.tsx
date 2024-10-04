@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./DocumentUpload.css";
 import { ReactComponent as Upload } from "../../assets/Profile/Upload.svg";
-import UploadPopup from "../UploadPopup/UploadPopup"; 
+import UploadPopup from "../UploadPopup/UploadPopup";
 
 interface DocumentUploadProps {
   onFilesUpload: (files: File[]) => void;
@@ -10,7 +10,7 @@ interface DocumentUploadProps {
 const DocumentUpload: React.FC<DocumentUploadProps> = ({ onFilesUpload }) => {
   const [dragging, setDragging] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [showPopup, setShowPopup] = useState(false); 
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
@@ -51,14 +51,25 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onFilesUpload }) => {
 
   return (
     <>
+      {/* <div
+        className={`upload-container transition-all duration-300 ease-in-out ${
+          dragging ? "dragging" : ""
+        }`} */}
+
       <div
-        className={`upload-container ${dragging ? "dragging" : ""}`}
+        className={`upload-container border-2 border-dashed p-10 rounded-lg transition-all duration-300 ease-in-out ${
+          dragging ? "scale-105 dragging walking-border" : "border-gray-300"
+        }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
         <div className="upload-content">
-          <button type="button" className="upload-button" onClick={handleUploadClick}>
+          <button
+            type="button"
+            className="upload-button"
+            onClick={handleUploadClick}
+          >
             <Upload />
             업로드
           </button>

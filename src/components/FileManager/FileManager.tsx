@@ -12,6 +12,8 @@ import ThreeDotMenu from "../ThreeDotMenu/ThreeDotMenu.tsx";
 import DeleteModal from "../../shared/Modals/DeleteModal.tsx";
 import Spinner from "../Spinner/Spinner.tsx";
 import Pagination from "../../shared/Pagination/Pagination.tsx";
+import { RiListView, RiRefreshFill } from "react-icons/ri";
+import { IoGrid } from "react-icons/io5";
 
 interface FileUpload {
   name: string;
@@ -153,7 +155,22 @@ const FileManager: React.FC = () => {
   return (
     <div className="file-manager-container">
       <div className="file-manager-header">
-        <div className="section-title">최근 업로드</div>
+        <div className="flex items-center gap-3">
+          <div className="section-title">최근 업로드</div>
+
+          <div className="relative group">
+            {/* Refresh button with icon */}
+            <div className="px-3 py-3 bg-[#f1eefb] rounded-lg border cursor-pointer">
+              <RiRefreshFill className="text-[#251659]" size={20} />
+            </div>
+
+            {/* Tooltip */}
+            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 translate-y-[-8px] opacity-0 group-hover:opacity-100 bg-gray-800 text-white text-xs rounded-lg py-1 px-2 pointer-events-none transition-opacity duration-300 ease-in-out">
+              Refresh
+            </div>
+          </div>
+        </div>
+
         <div className="header-buttons-container">
           {/* Filter By */}
           <CustomSelect
@@ -172,7 +189,7 @@ const FileManager: React.FC = () => {
             placeholder="정렬 기준"
           />
 
-          <div className="view-buttons">
+          {/* <div className="view-buttons">
             <button
               className={`${view === "list" ? "bg-black" : "bg-black"}`}
               onClick={() => handleViewChange("list")}
@@ -181,6 +198,29 @@ const FileManager: React.FC = () => {
             </button>
             <button onClick={() => handleViewChange("grid")}>
               <GridIcon />
+            </button>
+          </div> */}
+
+          <div className="view-buttons h-11">
+            <button
+              className={`py-2 px-4 rounded-t-lg  ${
+                view === "list"
+                  ? "bg-[#251659] text-white"
+                  : " text-gray-400 hover:bg-[#f1eefb]"
+              }`}
+              onClick={() => handleViewChange("list")}
+            >
+              <RiListView />
+            </button>
+            <button
+              className={`py-2 px-4 rounded-t-lg ${
+                view === "grid"
+                  ? "bg-[#251659] text-white"
+                  : "text-gray-400 hover:bg-[#f1eefb]"
+              }`}
+              onClick={() => handleViewChange("grid")}
+            >
+              <IoGrid size={10} />
             </button>
           </div>
         </div>
@@ -196,7 +236,7 @@ const FileManager: React.FC = () => {
             {view === "list" && (
               <div className="overflow-x-auto min-h-[500px]">
                 <table className="table-auto w-full">
-                  <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                  <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-100 ">
                     <tr>
                       <th className="p-2 whitespace-nowrap">
                         <div className="font-semibold text-left">이름</div>
@@ -210,13 +250,21 @@ const FileManager: React.FC = () => {
                         </div>
                       </th>
                       <th className="p-2 whitespace-nowrap">
+                        <div className="font-semibold text-left">상태</div>
+                      </th>
+                      <th className="p-2 whitespace-nowrap">
                         <div className="font-semibold text-center"></div>
                       </th>
                     </tr>
                   </thead>
                   <tbody className="text-sm divide-y divide-gray-100">
                     {sortedFiles().map((file, index) => (
-                      <tr key={index}>
+                      <tr
+                        key={index}
+                        className={`${
+                          index % 2 && "bg-gray-50"
+                        } hover:bg-[#f1eefb]`}
+                      >
                         <td className="p-2 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
@@ -233,10 +281,16 @@ const FileManager: React.FC = () => {
                           <div className="text-left">{file.documentGroup}</div>
                         </td>
                         <td className="p-2 whitespace-nowrap">
-                          <div className="text-left font-medium text-green-500">
+                          <div className="text-left font-medium text-gray-800">
                             {file.uploadDate.toLocaleDateString()}
                           </div>
                         </td>
+                        <td className="p-2 whitespace-nowrap">
+                          <div className="text-left font-medium bg-green-300 w-fit rounded-md px-2 py-1 text-gray-700">
+                            Success
+                          </div>
+                        </td>
+
                         <td className="p-2 whitespace-nowrap">
                           <ThreeDotMenu
                             onDownload={() => handleDownload(file)} // Pass the file to the download handler
@@ -258,8 +312,8 @@ const FileManager: React.FC = () => {
               <>
                 <div className="grid grid-cols-3 w-fit">
                   {sortedFiles().map((file, index) => (
-                    <div className="p-4 ">
-                      <div className="flex rounded-lg h-full  bg-gray-100 flex-col w-fit px-5 py-3">
+                    <div className="p-4">
+                      <div className="flex rounded-lg h-full bg-gray-100 flex-col w-fit px-5 py-3 transition-transform transform hover:scale-105 hover:shadow-lg hover:bg-gray-200 duration-300 ease-in-out">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
                             <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
@@ -271,10 +325,13 @@ const FileManager: React.FC = () => {
                               {file.name}
                             </div>
                           </div>
-                          <ThreeDotMenu
-                            onDownload={() => handleDownload(file)} // Pass the file to the download handler
-                            onDelete={() => handleDelete(index)}
-                          />
+
+                          <div className="ml-3">
+                            <ThreeDotMenu
+                              onDownload={() => handleDownload(file)} // Pass the file to the download handler
+                              onDelete={() => handleDelete(index)}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>

@@ -88,7 +88,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   return (
     <div className="relative" ref={selectRef}>
       <div
-        className="w-fit min-w-52  bg-white rounded-md p-3 cursor-pointer flex justify-between items-center"
+        className="w-fit min-w-52 h-fit bg-white rounded-md p-3 cursor-pointer flex justify-between items-center border"
         onClick={toggleDropdown}
       >
         <span>{displayValue()}</span>
